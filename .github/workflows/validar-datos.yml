@@ -1,0 +1,26 @@
+name: Validar datos de ventas
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Ejecutar pruebas (pytest)
+        run: pytest -v
+
+      - name: Validar ventas.csv (bloquea si hay datos defectuosos)
+        run: python validar_ventas.py ventas.csv
